@@ -1,12 +1,12 @@
 {
-  "name": "NYC TTP Full Stack Project",
+  "name": "app.js",
   "version": "1.0.0",
   "description": "stock porfolio tracker using IEX api",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "server": "nodemon app.js"
-    },
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chunisama/TTP-Full-Stack-Project.git"
