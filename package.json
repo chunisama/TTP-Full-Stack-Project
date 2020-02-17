@@ -1,5 +1,5 @@
 {
-  "name": "app.js",
+  "name": "mern-TTP-full-stack",
   "version": "1.0.0",
   "description": "stock porfolio tracker using IEX api",
   "main": "app.js",
