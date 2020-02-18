@@ -17,7 +17,7 @@ router.get("/test", (req, res) => {
 router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
   res.json({
     id: req.user.id,
-    handle: req.user.handle,
+    name: req.user.name,
     email: req.user.email
   });
 })
@@ -37,7 +37,7 @@ router.post('/register', (req, res) => {
         // Otherwise create a new user
         debugger;
         const newUser = new User({
-          handle: req.body.handle,
+          name: req.body.name,
           email: req.body.email,
           password: req.body.password
         });
