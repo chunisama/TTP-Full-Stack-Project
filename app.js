@@ -21,9 +21,10 @@ app.get("/", (req, res) => {
 app.use(passport.initialize());
 require('./config/passport')(passport);
 
-app.use("/api/users", users);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use("/api/users", users);
 
 const port = process.env.PORT || 5000;
 
