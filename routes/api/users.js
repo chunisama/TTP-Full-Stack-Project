@@ -7,11 +7,11 @@ const User = require('../../models/User');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport');
+// const https = require("https");
 
-
-router.get("/test", (req, res) => { 
-  res.json({ msg: "This is the users route" });
-});
+// router.get("/test", (req, res) => { 
+//   res.json({ msg: "This is the users route" });
+// });
 
 
 router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
@@ -21,6 +21,21 @@ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res
     email: req.user.email
   });
 })
+
+// router.get("/portfolio", (req, res) => { 
+//   const string = req.string
+//   https.get(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${string}&apikey=W490AN08PF46F16R`, res => {
+//     res.setEncoding("utf8");   
+//     let body = "";   
+//     res.on("data", data => {     
+//       body += data;   
+//     });   
+//     res.on("end", () => {     
+//       body = JSON.parse(body);
+//       console.log(body);
+//     }); 
+//   });
+// });
 
 router.post('/register', (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
@@ -35,7 +50,6 @@ router.post('/register', (req, res) => {
         return res.status(400).json({email: "A user has already registered with this address"})
       } else {
         // Otherwise create a new user
-        debugger;
         const newUser = new User({
           name: req.body.name,
           email: req.body.email,
