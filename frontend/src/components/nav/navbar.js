@@ -35,7 +35,6 @@ class NavBar extends React.Component {
   }
 
   render() {
-    console.log(process.env);
       return (
         <div>
             <h1>TTP Full Stack</h1>

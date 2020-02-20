@@ -25,7 +25,11 @@ const StockSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
-  }
+  },
+  transactionAmount: {
+    type: Number
+  },
+  
 });
 
 module.exports = Stock = mongoose.model('stock', StockSchema);

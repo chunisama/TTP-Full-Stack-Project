@@ -7,7 +7,7 @@ const searchReducer = (state = _nullState, action) => {
   Object.freeze(state)
   switch (action.type) {
     case RECEIVE_SEARCH:
-      return action.results.bestMatches;
+      return action.results.data.bestMatches;
     default: 
       return state;
   }

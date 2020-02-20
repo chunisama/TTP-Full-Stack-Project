@@ -7,8 +7,8 @@ const receiveSearch = results => ({
   results,
 });
 
-export const searchStock = (string) => dispatch => {
-  StockApiUtil.searchStock(string).then(results => {
-    dispatch(receiveSearch(results))
+export const searchStock = (query) => dispatch => {
+  return StockApiUtil.searchStock(query).then(results => {
+    return dispatch(receiveSearch(results));
   })
 };

@@ -6,7 +6,7 @@ import NavBarContainer from './nav/navbar_container';
 import MainPage from './main/main_page.js';
 import LoginFormContainer from './session/login_form_container';
 import SignupFormContainer from './session/signup_form_container';
-
+import PortfolioContainer from './portfolio/portfolio_container';
 
 
 const App = () => (
@@ -17,6 +17,7 @@ const App = () => (
         <AuthRoute exact path="/login" component={LoginFormContainer} />
         <AuthRoute exact path="/signup" component={SignupFormContainer} />
     </Switch>
+    <ProtectedRoute path='/portfolio' component={PortfolioContainer}></ProtectedRoute>
   </div>
 );
 

@@ -14,13 +14,13 @@ class Search extends React.Component {
   }
 
   handleChange(e) {    
-    this.setState({ currentString: e.target.value}, () => {      
-      return this.props.searchStock(this.state.currentString)
+    this.setState({ currentString: e.target.value}, () => {  
+      return this.props.searchStock(this.state.currentString);
     })
   }
 
   renderResults() {
-    let results;    
+    let results;
     if (this.state.currentString === "") {
       results = <div className="no-results"></div>;
     } else {
@@ -55,17 +55,19 @@ class Search extends React.Component {
     }
   }
 
-  render() {    
+  render() {
     let allResults = this.renderResults();
     return (
       <div>
         <div className="search-container">
-          <input type="text" className="search-barz" onFocus={this.handleFocus} onBlur={this.handleBlur} onChange={this.handleChange} value={this.state.currentString} placeholder="Search"/>
+          <input type="text" className="search-barz" onFocus={this.handleFocus} onBlur={this.handleBlur} onChange={this.handleChange} value={this.state.currentString} placeholder="Search a Company"/>
           {allResults.length > 0 && <div className={`search-results-${this.state.display}`} >
           <ul className="search-list">
             {allResults}
           </ul>
           </div> }
+          <input type="text" className="quantity" placeholder="Quantity"></input>
+          <button>Buy</button>
         </div> 
       </div>
     )

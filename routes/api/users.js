@@ -13,16 +13,17 @@ const passport = require('passport');
 //   res.json({ msg: "This is the users route" });
 // });
 
-
+// Auth Route for current user 
 router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
   res.json({
     id: req.user.id,
     name: req.user.name,
-    email: req.user.email
+    email: req.user.email,
+    balance: req.user.balance
   });
 })
 
-
+// Post route to authenticate user registration
 router.post('/register', (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
   if (!isValid) {
@@ -54,7 +55,7 @@ router.post('/register', (req, res) => {
     })
   });
 
-
+// Post route to authenticate user login
 router.post('/login', (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
 
@@ -75,7 +76,7 @@ router.post('/login', (req, res) => {
     bcrypt.compare(password, user.password)
       .then(isMatch => {
         if (isMatch) {
-        const payload = {id: user.id, name: user.name};
+        const payload = {id: user.id, name: user.name, balance: user.balance };
 
         jwt.sign( 
           payload,

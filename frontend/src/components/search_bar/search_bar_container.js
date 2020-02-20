@@ -1,15 +1,14 @@
-import { connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Search from './search';
-import { searchStock} from '../../actions/stock_actions';
+import { searchStock } from '../../actions/stock_actions';
 
-const msp = state => {
-  let results = state.entities.search
-  return { results }
-};
+const msp = state => ({
+  results: state.entities.search,
+});
 
 const mdp = dispatch => {
   return {
-    searchStock: string => dispatch(searchStock(string))
+    searchStock: string => dispatch(searchStock(string)),
   }
 };
 
