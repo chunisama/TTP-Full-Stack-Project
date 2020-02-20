@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
+const passport = require('passport');
 
 const Stock = require('../../models/Stock');
 const validateStockPurchase = require('../../validation/stocks');
@@ -8,13 +8,18 @@ const validateStockPurchase = require('../../validation/stocks');
 const keys = require('../../config/keys');
 const fetch = require('node-fetch');
 
+// async function for api request to AlphaVantage
 async function apiCallAV(searchQuery, apikey) {
   let data = await fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${searchQuery}&apikey=${apikey}`);
   let main = await data.json();
   return main;
-  
-  // Testing
-  // console.log(main);
+}
+
+// async function for api request to IEX
+async function apiCallIEX(ticker, apikey) {
+  let data = await fetch(`https://cloud.iexapis.com/stable/stock/${ticker}/quote/?token=${apikey}`);
+  let main = await data.json();
+  return main;
 }
 
 // API call for search endpoint on AlphaVantage => will give response to client to provide user search results to pick a stock to purchase
@@ -24,6 +29,47 @@ router.get(`/search/:searchQuery`, (req, res) => {
     return res.json(results);
   })
 });
+
+// Fetching a user's portfolio of stocks
+router.get('/user/:userId', (req, res) => {
+  Stock.find({user: req.params.userId})
+      .then(stocks => res.json(stocks))
+      .catch(err =>
+          res.status(404).json({ noStocksFound: 'No stock holdings in your portfolio' }
+      )
+  );
+});
+
+
+// Creating an db entry for stock purchase => user building portfolio
+router.post('/purchaseStock',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    debugger;
+    const { errors, isValid } = validateStockPurchase(req.body);
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+    apiCallIEX(req.body.symbol, keys.iexAPIKey).then(res => {
+      debugger;
+      if (req.body.balance >= res.latestPrice * req.body.qty){
+        const newStock = new Stock({
+          user: req.body.userId,
+          symbol: req.body.symbol,
+          quantity: req.body.qty,
+          price: res.latestPrice
+        });
+        const newBalance = req.body.balance - res.latestPrice * req.body.qty;
+        console.log(newStock);
+        User.findOneAndUpdate({_id: newStock.user}, { balance: newBalance }, { returnNewUser: true })
+          .then(user => res.json(user));
+        newStock.save().then(stock => res.json(stock));
+      } else {
+        return res.status(400).json({cashError: 'You require more cash'});
+      }
+    })
+  }
+);
 
 
 

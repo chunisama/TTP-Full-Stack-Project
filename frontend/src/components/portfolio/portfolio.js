@@ -13,13 +13,15 @@ export default class Portfolio extends Component {
     this.setState({currentBalance: this.props.currentUser.balance})
   }
 
+  
+
   render() {
     return (
       <div>
         <div className="trading-container">
           <div className="cash-label">Cash Available: </div>
           <div className="account-balance">${this.state.currentBalance}</div>
-          <SearchBarContainer />
+          <SearchBarContainer currentBalance={this.state.currentBalance} userId={this.props.currentUser.id}/>
         </div>
       </div>
     )

@@ -6,11 +6,7 @@ const StockSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'users'
   },
-  ticker: {
-    type: String,
-    required: true
-  },
-  company: {
+  symbol: {
     type: String,
     required: true
   },
@@ -25,11 +21,7 @@ const StockSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
-  },
-  transactionAmount: {
-    type: Number
-  },
-  
+  }
 });
 
 module.exports = Stock = mongoose.model('stock', StockSchema);
