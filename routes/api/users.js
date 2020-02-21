@@ -23,6 +23,18 @@ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res
   });
 })
 
+// Get route for user's current account balance
+router.get('/balance/:userId', (req, res) => {
+  return User.findOne({_id: req.params.userId})
+    .then(user => {
+      return res.json(user
+      )})
+    .catch(err =>
+      res.status(404).json({ noUserFound: 'Incorrect Credentials' }
+    )
+  );
+});
+
 // Post route to authenticate user registration
 router.post('/register', (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);

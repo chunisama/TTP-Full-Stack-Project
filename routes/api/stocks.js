@@ -34,13 +34,12 @@ router.get(`/search/:searchQuery`, (req, res) => {
 // Fetching a user's portfolio of stocks
 router.get('/user/:userId', (req, res) => {
   Stock.find({user: req.params.userId})
-      .then(stocks => res.json(stocks))
-      .catch(err =>
-          res.status(404).json({ noStocksFound: 'No stock holdings in your portfolio' }
-      )
+    .then(stocks => res.json(stocks))
+    .catch(err =>
+      res.status(404).json({ noStocksFound: 'No stock holdings in your portfolio' }
+    )
   );
 });
-
 
 // Creating an db entry for stock purchase => user building portfolio
 router.post('/purchaseStock',
@@ -50,6 +49,8 @@ router.post('/purchaseStock',
     if (!isValid) {
       return res.status(400).json(errors);
     }
+
+    
     apiCallIEX(req.body.symbol, keys.iexAPIKey).then(apiRes => {
       if (req.body.balance >= apiRes.latestPrice * req.body.qty){
         const newStock = new Stock({
