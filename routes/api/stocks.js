@@ -41,6 +41,9 @@ router.get('/user/:userId', (req, res) => {
   );
 });
 
+// Fetching latest prices for stocks 
+router.get('/')
+
 // Creating an db entry for stock purchase => user building portfolio
 router.post('/purchaseStock',
   passport.authenticate('jwt', { session: false }),
@@ -49,8 +52,6 @@ router.post('/purchaseStock',
     if (!isValid) {
       return res.status(400).json(errors);
     }
-
-    
     apiCallIEX(req.body.symbol, keys.iexAPIKey).then(apiRes => {
       if (req.body.balance >= apiRes.latestPrice * req.body.qty){
         const newStock = new Stock({
@@ -64,7 +65,7 @@ router.post('/purchaseStock',
         const payload = [newStock, newBalance];
         return payload;
         } else {
-          return res.status(400).json({cashError: 'You require more cash'});
+          return res.status(400).json({balance: 'You require more cash'});
         }}).then((payload) => {
         User.findByIdAndUpdate({_id: payload[0].user}, { balance: payload[1] }, {new: true}).then(
           (err, user) => {

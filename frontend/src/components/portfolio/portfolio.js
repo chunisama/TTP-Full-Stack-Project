@@ -7,8 +7,9 @@ export default class Portfolio extends Component {
     this.state = {
       currentBalance: 0,
       portfolioValue: 0,
+      errors: {},
     }
-    this.portfolioItems = this.portfolioItems.bind(this);
+    this.renderPortfolioItems = this.renderPortfolioItems.bind(this);
   }
 
   componentDidMount(){
@@ -22,9 +23,22 @@ export default class Portfolio extends Component {
       this.setState({currentBalance: this.props.accountBalance})
       this.props.fetchPortfolio(this.props.currentUser.id);
     }
+     else if (this.props.errors !== this.state.errors) {
+      this.setState({errors: this.props.errors});
+    }
   }
 
-  portfolioItems(){
+  renderErrors(){
+    let formattedErrors = Object.keys(this.state.errors).map((error, i) => {
+      return(
+      <li key={`port-error-${i}`}>
+        {this.state.errors[error]}
+      </li>)
+    })
+    return formattedErrors;
+  }
+
+  renderPortfolioItems(){
     let qtys;
     let symbols
     const portItems = this.props.portfolio.reduce((prev, curr) => {
@@ -68,7 +82,7 @@ export default class Portfolio extends Component {
           </div>
           <div className="portfolio-items-wrapper">
             <ul className="stock-index">
-              {this.portfolioItems()}
+              {this.renderPortfolioItems()}
             </ul>
           </div>
         </div>
@@ -77,6 +91,7 @@ export default class Portfolio extends Component {
           <div className="account-balance">${this.state.currentBalance.toFixed(2)}</div>
           <SearchBarContainer userId={this.props.currentUser.id}/>
         </div>
+        {this.renderErrors()}
       </div>
     )
   }

@@ -9,13 +9,13 @@ class Search extends React.Component {
       currentStockSymbol: null,
       quantity: 0,
     }
-    this.handleChange = this.handleChange.bind(this);
+    this.handleQuery = this.handleQuery.bind(this);
     this.handleBlur = this.handleBlur.bind(this);  
     this.handleFocus = this.handleFocus.bind(this);
     this.handleQuantity = this.handleQuantity.bind(this);
   }
 
-  handleChange(e) {    
+  handleQuery(e) {    
     this.setState({ currentString: e.target.value}, () => {
       if (this.state.currentString && this.state.currentString.length > 1) {
         if (this.state.currentString.length % 2 === 0) {
@@ -75,7 +75,7 @@ class Search extends React.Component {
     return (
       <div>
         <div className="search-container">
-          <input type="search" className="search-bar" onBlur={this.handleBlur} onFocus={this.handleFocus} onChange={this.handleChange} value={this.state.currentString} placeholder="Search a Company"/>
+          <input type="search" className="search-bar" onBlur={this.handleBlur} onFocus={this.handleFocus} onChange={this.handleQuery} value={this.state.currentString} placeholder="Search a Company"/>
           {allResults.length > 0 && <div className={`search-results-${this.state.display}`} >
           <ul className="search-list">
             {allResults}

@@ -13,7 +13,6 @@ class SignupForm extends React.Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.clearedErrors = false;
   }
   
   componentWillReceiveProps(nextProps) {

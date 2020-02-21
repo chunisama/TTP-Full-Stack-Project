@@ -3,13 +3,9 @@ const Validator = require('validator');
 module.exports = function validateStockPurchase(data) {
   let errors = {};
 
-
-  if (Validator.isNumeric(data.qty) && !Validator.isDecimal(data.qty)) {
+  if (Validator.isDecimal(data.qty) && data.qty % 1 != 0) {
+    debugger
     errors.quantity = 'Shares can only be purchased at quantities of whole numbers';
-  }
-
-  if (!Validator.isNumeric(data.qty) && !Validator.isDecimal(data.qty)) {
-    errors.quantity = 'Quantity must be a full number';
   }
 
   if (data.qty < 1) {

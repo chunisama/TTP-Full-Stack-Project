@@ -1,8 +1,8 @@
 import * as StockApiUtil from '../util/stock_api_util';
-
 export const RECEIVE_SEARCH = "RECEIVE_SEARCH";
 export const RECEIVE_PORTFOLIO = "RECEIVE_PORTFOLIO";
 export const RECEIVE_NEW_BALANCE = "RECEIVE_NEW_BALANCE";
+export const RECEIVE_PORTFOLIO_ERRORS = "RECEIVE_PORTFOLIO_ERRORS";
 
 // todo rename this file portfolio actions
 export const receiveSearch = results => ({
@@ -18,6 +18,11 @@ export const receiveNewBalance = accountBalance => ({
 export const receivePortfolio = portfolio => ({
   type: RECEIVE_PORTFOLIO,
   portfolio,
+})
+
+export const receivePortfolioErrors = errors => ({
+  type: RECEIVE_PORTFOLIO_ERRORS,
+  errors,
 })
 
 // export const fetchStockPrice = symbol => dispatch => {
@@ -47,5 +52,7 @@ export const searchStock = (query) => dispatch => {
 export const purchaseStock = (payload) => dispatch => {
   return StockApiUtil.purchaseStock(payload).then(accountBalance => {
     return dispatch(receiveNewBalance(accountBalance));
+  },  err => {
+    return dispatch(receivePortfolioErrors(err.response.data))
   })
 };

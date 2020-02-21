@@ -7,6 +7,7 @@ const msp = state => {
     currentUser: state.session.user,
     accountBalance: state.session.user.balance,
     portfolio: state.entities.portfolio,
+    errors: state.errors.portfolio
   }
 };
 
