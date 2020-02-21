@@ -6,7 +6,7 @@ const portfolioReducer = (state = _nullState, action) => {
   Object.freeze(state);
   switch (action.type) {
     case RECEIVE_PORTFOLIO:
-      return action.portfolio.data;;
+      return action.portfolio.data;
     default:
       return state;
   }

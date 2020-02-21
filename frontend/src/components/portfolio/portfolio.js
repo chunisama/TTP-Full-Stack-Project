@@ -8,24 +8,33 @@ export default class Portfolio extends Component {
       currentBalance: 0,
       portfolioValue: 0,
       errors: {},
+      symbols: new Set(),
+      quantities: new Set(),
     }
     this.renderPortfolioItems = this.renderPortfolioItems.bind(this);
+    this.renderLatestStockPrice = this.renderLatestStockPrice.bind(this);
+    this.fetchLatestStockPrice = this.fetchLatestStockPrice.bind(this);
   }
 
   componentDidMount(){
     this.props.fetchAccountBalance(this.props.currentUser.id);
     this.setState({currentBalance: this.props.accountBalance});
-    this.props.fetchPortfolio(this.props.currentUser.id);
+    this.props.fetchPortfolio(this.props.currentUser.id).then(() => this.fetchLatestStockPrice());
   }
 
   componentDidUpdate(){
     if (this.props.accountBalance !== this.state.currentBalance) {
       this.setState({currentBalance: this.props.accountBalance})
-      this.props.fetchPortfolio(this.props.currentUser.id);
+      this.props.fetchPortfolio(this.props.currentUser.id)
+      .then(() => this.fetchLatestStockPrice());
     }
      else if (this.props.errors !== this.state.errors) {
       this.setState({errors: this.props.errors});
-    }
+    } 
+  }
+
+  updatePortfolioValue(){
+
   }
 
   renderErrors(){
@@ -38,9 +47,29 @@ export default class Portfolio extends Component {
     return formattedErrors;
   }
 
+  fetchLatestStockPrice(){
+    const symbols = Array.from(this.state.symbols);
+    symbols.map((symbol) => (
+      this.props.fetchStockPrice(symbol)
+      ));
+    }
+    
+  renderLatestStockPrice(){
+    const symbols = Array.from(this.state.symbols);
+    const qtys = Array.from(this.state.quantities);
+    let prices = symbols.map((symbol,idx) => {
+      return (
+        <div className="stock-price" key={`price-${idx}`}>
+          {(this.props.prices[symbol] * qtys[idx]).toFixed(2)}
+        </div>
+      )
+    })
+    return prices;
+  }
+
   renderPortfolioItems(){
     let qtys;
-    let symbols
+    let symbols;
     const portItems = this.props.portfolio.reduce((prev, curr) => {
       let count = prev.get(curr.symbol) || 0;
       prev.set(curr.symbol, curr.quantity + count);
@@ -50,26 +79,24 @@ export default class Portfolio extends Component {
       return <p>Your portfolio is empty</p>
     } else {
       qtys = [...portItems.values()].map((qty, idx) => {
-        return <div key={idx} >{qty} Shares</div>
+        this.state.quantities.add(qty);
+        return <div key={`qty-${idx}`} >{qty} Shares</div>
       });
       symbols = [...portItems.keys()].map(symbol => {
+        this.state.symbols.add(symbol);
         return <div key={symbol} >{symbol} - </div>
-      })
-
+      });
     }
-    return (
-      <li className="index-item">
-        <div className="content-wrapper">
-          <div className="company-symbol">
-            {symbols}
-          </div>
-          <div className="share-quantity">
-            {qtys}
-          </div>
-        </div>
-      </li>
-    )
-  }
+    return(
+      <>
+    <div className="company-symbol">
+      {symbols}
+    </div>
+    <div className="share-quantity">
+      {qtys}
+    </div>
+      </>)
+      }
 
 
   render() {
@@ -78,11 +105,16 @@ export default class Portfolio extends Component {
         <div className="portfolio-container">
           <div className="portfolio-header-wrapper">
             <div className="portfolio-title">Portfolio</div>
-            <div className="portfolio-Value">{this.state.portfolioValue}</div>
+            <div className="portfolio-value">{this.state.portfolioValue}</div>
           </div>
           <div className="portfolio-items-wrapper">
             <ul className="stock-index">
-              {this.renderPortfolioItems()}
+              <li className="index-item">
+                <div className="content-wrapper">
+                  {this.renderPortfolioItems()}
+                  {this.renderLatestStockPrice()}
+                </div>
+              </li>
             </ul>
           </div>
         </div>

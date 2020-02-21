@@ -3,8 +3,9 @@ export const RECEIVE_SEARCH = "RECEIVE_SEARCH";
 export const RECEIVE_PORTFOLIO = "RECEIVE_PORTFOLIO";
 export const RECEIVE_NEW_BALANCE = "RECEIVE_NEW_BALANCE";
 export const RECEIVE_PORTFOLIO_ERRORS = "RECEIVE_PORTFOLIO_ERRORS";
+export const RECEIVE_LATEST_PRICE = "RECEIVE_LATEST_PRICE";
 
-// todo rename this file portfolio actions
+// todo: rename this file portfolio actions
 export const receiveSearch = results => ({
   type: RECEIVE_SEARCH,
   results,
@@ -18,18 +19,23 @@ export const receiveNewBalance = accountBalance => ({
 export const receivePortfolio = portfolio => ({
   type: RECEIVE_PORTFOLIO,
   portfolio,
+});
+
+export const receiveLatestPrice = payload => ({
+  type: RECEIVE_LATEST_PRICE,
+  payload,
 })
 
 export const receivePortfolioErrors = errors => ({
   type: RECEIVE_PORTFOLIO_ERRORS,
   errors,
-})
+});
 
-// export const fetchStockPrice = symbol => dispatch => {
-//   return StockApiUtil.fetchStockPrice(symbol).then(latestPrice => {
-
-//   })
-// }
+export const fetchStockPrice = symbol => dispatch => {  
+  return StockApiUtil.fetchLatestPrice(symbol).then(payload => {
+    return dispatch(receiveLatestPrice(payload))
+  })
+};
 
 export const fetchAccountBalance = (userId) => dispatch => {
   return StockApiUtil.fetchAccountBalance(userId).then(accountBalance => {

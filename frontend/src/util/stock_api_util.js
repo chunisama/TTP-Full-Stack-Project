@@ -16,6 +16,6 @@ export const fetchAccountBalance = (userId) => {
   return axios.get(`/api/users/balance/${userId}`)
 }
 
-// export const fetchKeyStats = symbol => (
-  
-// );
+export const fetchLatestPrice = (symbol) => {
+  return axios.get(`api/stocks/fetchlatestPrice/${symbol}`)
+}

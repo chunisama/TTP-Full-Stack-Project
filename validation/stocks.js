@@ -4,7 +4,6 @@ module.exports = function validateStockPurchase(data) {
   let errors = {};
 
   if (Validator.isDecimal(data.qty) && data.qty % 1 != 0) {
-    debugger
     errors.quantity = 'Shares can only be purchased at quantities of whole numbers';
   }
 

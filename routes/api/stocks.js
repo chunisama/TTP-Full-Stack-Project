@@ -41,8 +41,15 @@ router.get('/user/:userId', (req, res) => {
   );
 });
 
-// Fetching latest prices for stocks 
-router.get('/')
+// Fetching latest stock price using a company symbol 
+router.get('/fetchLatestPrice/:symbol', (req, res) => {
+  apiCallIEX(req.params.symbol, keys.iexAPIKey).then(apiRes => {
+    let payload = { symbol: apiRes.symbol, latestPrice: apiRes.latestPrice };
+    return payload;
+  }).then(payload => {
+    res.json(payload);
+  })
+})
 
 // Creating an db entry for stock purchase => user building portfolio
 router.post('/purchaseStock',
