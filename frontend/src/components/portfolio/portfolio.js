@@ -13,7 +13,11 @@ export default class Portfolio extends Component {
     this.setState({currentBalance: this.props.currentUser.balance})
   }
 
-  
+  componentDidUpdate(prevProps){
+    if (prevProps.currentUser.balance !== this.state.currentBalance) {
+      this.setState({currentBalance: prevProps.currentUser.balance});
+    }
+  }
 
   render() {
     return (

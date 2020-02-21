@@ -32,7 +32,6 @@ export const searchStock = (query) => dispatch => {
 };
 
 export const purchaseStock = (payload) => dispatch => {
-  debugger;
   return StockApiUtil.purchaseStock(payload).then(payload => {
     return dispatch(receivePortfolio(payload));
   })

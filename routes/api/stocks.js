@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
+const User = require('../../models/User');
 const Stock = require('../../models/Stock');
 const validateStockPurchase = require('../../validation/stocks');
 
@@ -50,26 +51,35 @@ router.post('/purchaseStock',
     if (!isValid) {
       return res.status(400).json(errors);
     }
-    apiCallIEX(req.body.symbol, keys.iexAPIKey).then(res => {
+    apiCallIEX(req.body.symbol, keys.iexAPIKey).then(apiRes => {
       debugger;
-      if (req.body.balance >= res.latestPrice * req.body.qty){
+      if (req.body.balance >= apiRes.latestPrice * req.body.qty){
         const newStock = new Stock({
           user: req.body.userId,
           symbol: req.body.symbol,
           quantity: req.body.qty,
-          price: res.latestPrice
+          price: apiRes.latestPrice
         });
-        const newBalance = req.body.balance - res.latestPrice * req.body.qty;
-        console.log(newStock);
-        User.findOneAndUpdate({_id: newStock.user}, { balance: newBalance }, { returnNewUser: true })
-          .then(user => res.json(user));
-        newStock.save().then(stock => res.json(stock));
-      } else {
-        return res.status(400).json({cashError: 'You require more cash'});
-      }
-    })
-  }
-);
+        const newBalance = req.body.balance - (newStock.price * newStock.quantity);
+        debugger;
+        const result = [newStock, newBalance];
+        return result;
+        } else {
+          return res.status(400).json({cashError: 'You require more cash'});
+        }}).then((result) => {
+        User.findByIdAndUpdate({_id: result[0].user}, { balance: result[1] }, {isNew: true},
+          (err, result) => {
+            debugger;
+            if (err) {
+              res.json(err);
+            } else {
+              result[0].save();
+              res.json(result);
+            }})
+        // .then(stock => res.json(stock));
+      })
+    }
+  );
 
 
 

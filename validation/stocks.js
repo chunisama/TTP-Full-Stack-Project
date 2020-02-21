@@ -16,7 +16,7 @@ module.exports = function validateStockPurchase(data) {
     errors.quantity = 'Quantity must be greater than zero in order to place a buy order';
   }
 
-  if (Validator.isEmpty(data.qty)) {
+  if (Validator.isEmpty(data.qty.toString())) {
     errors.quantity = 'Quantity field is required';
   }
 

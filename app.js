@@ -9,10 +9,12 @@ const users = require("./routes/api/users");
 const stocks = require("./routes/api/stocks");
 
 mongoose
-  .connect(db, { useNewUrlParser: true,  useUnifiedTopology: true })
+  .connect(db, { useNewUrlParser: true,  useUnifiedTopology: true, useFindAndModify: false })
   .then(() => console.log("Connected to MongoDB successfully"))
   .catch(err => console.log(err));
 
+
+  
 // Test
 // app.get("/", (req, res) => {
 //   // console.log(res);
