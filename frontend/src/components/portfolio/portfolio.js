@@ -14,6 +14,7 @@ export default class Portfolio extends Component {
     this.renderPortfolioItems = this.renderPortfolioItems.bind(this);
     this.renderLatestStockPrice = this.renderLatestStockPrice.bind(this);
     this.fetchLatestStockPrice = this.fetchLatestStockPrice.bind(this);
+    this.updatePortfolioValue = this.updatePortfolioValue.bind(this);
   }
 
   componentDidMount(){
@@ -34,7 +35,13 @@ export default class Portfolio extends Component {
   }
 
   updatePortfolioValue(){
-
+    const symbols = Array.from(this.state.symbols);
+    const qtys = Array.from(this.state.quantities);
+    let totalValue = 0;
+    symbols.map((symbol,idx) => {
+      return totalValue += this.props.prices[symbol] * qtys[idx];
+    });
+    return totalValue;
   }
 
   renderErrors(){
@@ -105,7 +112,7 @@ export default class Portfolio extends Component {
         <div className="portfolio-container">
           <div className="portfolio-header-wrapper">
             <div className="portfolio-title">Portfolio</div>
-            <div className="portfolio-value">{this.state.portfolioValue}</div>
+            <div className="portfolio-value">{this.updatePortfolioValue()}</div>
           </div>
           <div className="portfolio-items-wrapper">
             <ul className="stock-index">
