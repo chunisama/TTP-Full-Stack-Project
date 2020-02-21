@@ -2,16 +2,22 @@ import * as StockApiUtil from '../util/stock_api_util';
 
 export const RECEIVE_SEARCH = "RECEIVE_SEARCH";
 export const RECEIVE_PORTFOLIO = "RECEIVE_PORTFOLIO";
+export const RECEIVE_NEW_BALANCE = "RECEIVE_NEW_BALANCE";
 
 export const receiveSearch = results => ({
   type: RECEIVE_SEARCH,
   results,
 });
 
+export const receiveNewBalance = accountBalance => ({
+  type: RECEIVE_NEW_BALANCE,
+  accountBalance,
+});
+
 export const receivePortfolio = portfolio => ({
   type: RECEIVE_PORTFOLIO,
   portfolio,
-});
+})
 
 // export const fetchStockPrice = symbol => dispatch => {
 //   return StockApiUtil.fetchStockPrice(symbol).then(latestPrice => {
@@ -32,7 +38,7 @@ export const searchStock = (query) => dispatch => {
 };
 
 export const purchaseStock = (payload) => dispatch => {
-  return StockApiUtil.purchaseStock(payload).then(payload => {
-    return dispatch(receivePortfolio(payload));
+  return StockApiUtil.purchaseStock(payload).then(accountBalance => {
+    return dispatch(receiveNewBalance(accountBalance));
   })
 };

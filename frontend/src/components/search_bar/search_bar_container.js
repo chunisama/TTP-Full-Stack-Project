@@ -4,6 +4,7 @@ import { searchStock, purchaseStock } from '../../actions/stock_actions';
 
 const msp = state => ({
   results: state.entities.search,
+  accountBalance: state.session.user.balance,
 });
 
 const mdp = dispatch => {

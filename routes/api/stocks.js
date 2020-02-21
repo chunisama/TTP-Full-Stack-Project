@@ -46,13 +46,11 @@ router.get('/user/:userId', (req, res) => {
 router.post('/purchaseStock',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    debugger;
     const { errors, isValid } = validateStockPurchase(req.body);
     if (!isValid) {
       return res.status(400).json(errors);
     }
     apiCallIEX(req.body.symbol, keys.iexAPIKey).then(apiRes => {
-      debugger;
       if (req.body.balance >= apiRes.latestPrice * req.body.qty){
         const newStock = new Stock({
           user: req.body.userId,
@@ -60,24 +58,19 @@ router.post('/purchaseStock',
           quantity: req.body.qty,
           price: apiRes.latestPrice
         });
+        newStock.save();
         const newBalance = req.body.balance - (newStock.price * newStock.quantity);
-        debugger;
-        const result = [newStock, newBalance];
-        return result;
+        const payload = [newStock, newBalance];
+        return payload;
         } else {
           return res.status(400).json({cashError: 'You require more cash'});
-        }}).then((result) => {
-        User.findByIdAndUpdate({_id: result[0].user}, { balance: result[1] }, {isNew: true},
-          (err, result) => {
-            debugger;
-            if (err) {
-              res.json(err);
-            } else {
-              result[0].save();
-              res.json(result);
-            }})
-        // .then(stock => res.json(stock));
-      })
+        }}).then((payload) => {
+        User.findByIdAndUpdate({_id: payload[0].user}, { balance: payload[1] }, {new: true}).then(
+          (err, user) => {
+            err ? res.json(err) : res.json(user);
+          }
+        );
+      });
     }
   );
 

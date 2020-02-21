@@ -10,12 +10,13 @@ export default class Portfolio extends Component {
   }
 
   componentDidMount(){
-    this.setState({currentBalance: this.props.currentUser.balance})
+    this.props.fetchPortfolio(this.props.currentUser.id);
+    this.setState({currentBalance: this.props.accountBalance});
   }
 
-  componentDidUpdate(prevProps){
-    if (prevProps.currentUser.balance !== this.state.currentBalance) {
-      this.setState({currentBalance: prevProps.currentUser.balance});
+  componentDidUpdate(){
+    if (this.props.accountBalance !== this.state.currentBalance) {
+      this.setState({currentBalance: this.props.accountBalance});
     }
   }
 
@@ -25,7 +26,7 @@ export default class Portfolio extends Component {
         <div className="trading-container">
           <div className="cash-label">Cash Available: </div>
           <div className="account-balance">${this.state.currentBalance}</div>
-          <SearchBarContainer currentBalance={this.state.currentBalance} userId={this.props.currentUser.id}/>
+          <SearchBarContainer userId={this.props.currentUser.id}/>
         </div>
       </div>
     )

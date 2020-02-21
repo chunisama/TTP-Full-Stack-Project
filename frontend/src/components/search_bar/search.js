@@ -43,7 +43,6 @@ class Search extends React.Component {
       let outputResults = filteredResults.map((stock, idx) => {
         let symbol = "1. symbol";
         let name = "2. name";      
-        // debugger
         return <li key={idx} className="filtered-search" onClick={() => this.setState({currentString: stock[name], currentStockSymbol: stock[symbol]})}>
           <div className="search-symbol">{stock[symbol]}</div>
           <span className="search-name">{stock[name]}</span></li>
@@ -71,7 +70,7 @@ class Search extends React.Component {
     let allResults = this.renderResults();
     let payload = { symbol: this.state.currentStockSymbol, 
       qty: this.state.quantity,
-      balance: this.props.currentBalance,
+      balance: this.props.accountBalance,
       userId: this.props.userId };
     return (
       <div>

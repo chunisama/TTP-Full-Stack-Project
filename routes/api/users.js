@@ -30,6 +30,7 @@ router.post('/register', (req, res) => {
   return res.status(400).json(errors);
 }
   // Check to make sure nobody has already registered with a duplicate email
+  // todo: Fix this json response is only the account balance not entire user object
   User.findOne({ email: req.body.email })
     .then(user => {
       if (user) {
@@ -59,7 +60,7 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
 
-  console.log(errors);
+  // console.log(errors);
 
   if (!isValid) {
     return res.status(400).json(errors);

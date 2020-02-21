@@ -1,6 +1,9 @@
 import { RECEIVE_CURRENT_USER, 
          RECEIVE_USER_LOGOUT, 
          RECEIVE_USER_SIGN_IN } from '../actions/session_actions';
+import { RECEIVE_NEW_BALANCE } from '../actions/stock_actions';
+import { merge } from 'lodash';
+
 
 const initialState = {
   isAuthenticated: false,
@@ -25,6 +28,10 @@ export default function(state = initialState, action) {
         ...state,
         isSignedIn: true
       }
+    case RECEIVE_NEW_BALANCE:
+      const newState = merge({}, state);
+      newState.user.balance = action.accountBalance.data.balance;
+      return newState;
     default:
       return state;
   }
