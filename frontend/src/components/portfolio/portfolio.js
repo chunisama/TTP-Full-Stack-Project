@@ -9,7 +9,7 @@ export default class Portfolio extends Component {
       portfolioValue: 0,
       errors: {},
       symbols: new Set(),
-      quantities: [],
+      quantities: {},
     };
     this.renderPortfolioItems = this.renderPortfolioItems.bind(this);
     this.renderLatestStockPrices = this.renderLatestStockPrices.bind(this);
@@ -41,7 +41,6 @@ export default class Portfolio extends Component {
     const qtys = this.state.quantities;
     let totalValue = 0;
     this.props.prices.map((quote,idx) => {
-      debugger;
       return totalValue += quote.latestPrice * qtys[idx];
     });
     return totalValue;
@@ -93,7 +92,7 @@ export default class Portfolio extends Component {
       return <p>Your portfolio is empty</p>
     } else {
       qtys = [...portItems.values()].map((qty, idx) => {
-        this.state.quantities.push(qty);
+        this.state.quantities[idx] = qty;
         return <div key={`qty-${idx}`} >{qty} Share(s)</div>
       });
       symbols = [...portItems.keys()].map(symbol => {
