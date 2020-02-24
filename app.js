@@ -18,7 +18,6 @@ mongoose
 // Test
 // app.get("/", (req, res) => {
 //   // console.log(res);
-//   // debugger;
 //   res.send("Hello World");
 // });
 

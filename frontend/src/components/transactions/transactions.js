@@ -22,14 +22,13 @@ export default class Transactions extends Component {
   }
 
   renderTransactions(){
-    let trans = this.props.transactions.map((transaction) => {
+    let trans = this.props.transactions.map((transaction, idx) => {
       let stockSymbol = transaction.symbol;
       let transactionPrice = transaction.price;
       let stockQty = transaction.quantity;
-      // debugger;
       let transactionDate = this.formatDate(new Date(transaction.date)).concat(this.formatAMPM(new Date (transaction.date)).toString());
       return (
-        <li className="index-item">
+        <li className="index-item" key={idx}>
           <div> BUY({stockSymbol}) </div>
           <div>{stockQty} Share(s) @</div>
           <div>${transactionPrice}</div>

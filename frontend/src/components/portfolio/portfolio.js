@@ -11,11 +11,12 @@ export default class Portfolio extends Component {
       symbols: new Set(),
       quantities: {},
     };
-    this.renderPortfolioItems = this.renderPortfolioItems.bind(this);
+    this.renderStockQuantities = this.renderStockQuantities.bind(this);
     this.renderLatestStockPrices = this.renderLatestStockPrices.bind(this);
-    // this.fetchLatestStockPrice = this.fetchLatestStockPrice.bind(this);
+    this.renderStockSymbols = this.renderStockSymbols.bind(this);
     this.updatePortfolioValue = this.updatePortfolioValue.bind(this);
     this.fetchLatestStockBatchPrices = this.fetchLatestStockBatchPrices.bind(this);
+    // this.fetchLatestStockPrice = this.fetchLatestStockPrice.bind(this);
   }
 
   componentDidMount(){
@@ -66,21 +67,59 @@ export default class Portfolio extends Component {
   fetchLatestStockBatchPrices(){
     const symbols = Array.from(this.state.symbols);
     this.props.fetchStockBatchPrices(symbols);
-    }
-    
+  } 
+
+
+
+  // Tried using IEX's opening price in their api but kept returning null => might be vendor issue
+  // Opted into using previousClosing Price instead for functionality
   renderLatestStockPrices(){
     const qtys = this.state.quantities;
     let prices = this.props.prices.map((quote,idx) => {
-      return (
-        <div key={`price-${idx}`}>
-          ${(quote.latestPrice * qtys[idx]).toFixed(2)}
-        </div>
-      )
+      if (quote.latestPrice > quote.previousClose){
+        return (
+          <div key={`price-${idx}`} className="green-stock">
+            ${(quote.latestPrice * qtys[idx]).toFixed(2)}
+          </div>
+        )
+      } else if (quote.latestPrice < quote.previousClose){
+        return (
+          <div key={`price-${idx}`} className="red-stock">
+            ${(quote.latestPrice * qtys[idx]).toFixed(2)}
+          </div>
+        )
+      } else if (quote.latestPrice === quote.previousClose){        
+        return (
+          <div key={`price-${idx}`} className="gray-stock">
+            ${(quote.latestPrice * qtys[idx]).toFixed(2)}
+          </div>
+        )
+      }
     })
     return prices;
   }
 
-  renderPortfolioItems(){
+  renderStockSymbols(){
+    const symbols = Array.from(this.state.symbols);
+    let tickers = this.props.prices.map((quote,idx) => {
+      if (quote.latestPrice > quote.previousClose){
+        return (
+          <div key={`symbol-${idx}`} className="symbol-green">{symbols[idx]}</div>
+        )
+      } else if (quote.latestPrice < quote.previousClose){
+        return (
+          <div key={`symbol-${idx}`} className="symbol-red">{symbols[idx]}</div>
+        )
+      } else if (quote.latestPrice === quote.previousClose){        
+        return (
+          <div key={`symbol-${idx}`} className="symbol-gray">{symbols[idx]}</div>
+        )
+      }
+    })
+    return tickers;
+  }
+
+  renderStockQuantities(){
     let qtys;
     let symbols;
     const portItems = this.props.portfolio.reduce((prev, curr) => {
@@ -95,22 +134,17 @@ export default class Portfolio extends Component {
         this.state.quantities[idx] = qty;
         return <div key={`qty-${idx}`} >{qty} Share(s)</div>
       });
-      symbols = [...portItems.keys()].map(symbol => {
+      symbols = [...portItems.keys()].map((symbol) => {
         this.state.symbols.add(symbol);
-        return <div key={symbol} >{symbol} </div>
       });
     }
     return(
       <>
-    <div className="company-symbol">
-      {symbols}
-    </div>
     <div className="share-quantity">
       {qtys}
     </div>
       </>)
-      }
-
+    }
 
   render() {
     return (
@@ -122,7 +156,10 @@ export default class Portfolio extends Component {
           <div className="portfolio-items-wrapper">
             <ul className="stock-index">
               <li className="index-item">
-                  {this.renderPortfolioItems()}
+                  <div className="company-symbol">
+                    {this.renderStockSymbols()}
+                  </div>
+                    {this.renderStockQuantities()}
                   <div className="stock-price">
                     {this.renderLatestStockPrices()}
                   </div>
@@ -133,8 +170,8 @@ export default class Portfolio extends Component {
         <div className="trading-container">
           <div className="account-balance">Cash Available: ${this.state.currentBalance.toFixed(2)} </div>
           <SearchBarContainer userId={this.props.currentUser.id}/>
+          {this.renderErrors()}
         </div>
-        {this.renderErrors()}
       </div>
     )
   }

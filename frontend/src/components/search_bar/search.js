@@ -73,7 +73,6 @@ class Search extends React.Component {
       balance: this.props.accountBalance,
       userId: this.props.userId };
     return (
-      <div>
         <div className="search-container">
           <input type="search" className="search-bar" onBlur={this.handleBlur} onFocus={this.handleFocus} onChange={this.handleQuery} value={this.state.currentString} placeholder="Search a Company"/>
           {allResults.length > 0 && <div className={`search-results-${this.state.display}`} >
@@ -84,7 +83,6 @@ class Search extends React.Component {
           <input type="text" onChange={this.handleQuantity} className="quantity" placeholder="Quantity"></input>
           <button onClick={() => this.props.purchaseStock(payload)}>Buy</button>
         </div> 
-      </div>
     )
   }
 }

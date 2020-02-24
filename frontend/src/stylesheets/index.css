@@ -111,7 +111,7 @@ input {
 
 input.quantity {
   margin: 2%;
-  width: 8%;
+  width: 12%;
 }
 
 input.search-bar {
@@ -136,7 +136,8 @@ button{
 .search-results-true {
   background: white;
   width: 65%;
-  top: 50px;
+  top: 60px;
+  left: 5px;
   color: black;
   font-size: 13px;
   position: absolute;
@@ -181,4 +182,20 @@ ul.transaction-index {
   text-align: center;
   font-size: 40px;
   margin-bottom: 30px;
+}
+
+.green-stock {
+  color: #1db954;
+}
+
+.red-stock {
+  color: red;
+}
+
+.gray-stock {
+  color: gray;
+}
+
+.symbol-red{
+  color: red;
 }
