@@ -62,9 +62,11 @@ router.get('/fetchLatestPrice/:symbol', (req, res) => {
 router.get('/fetchLatestBatchPrices/:symbols', (req, res) => {
   apiBatchCallIEX(req.params.symbols, keys.iexAPIKey).then(apiRes => {
     let formattedRes = Object.values(apiRes).map(item => {
+      debugger;
       return { 
       symbol: item.quote.symbol, 
       open: item.quote.open,
+      previousClose: item.quote.previousClose,
       latestPrice: item.quote.latestPrice,
       isUSMarketOpen: item.quote.isUSMarketOpen,
     }});

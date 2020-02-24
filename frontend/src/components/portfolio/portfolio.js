@@ -41,6 +41,7 @@ export default class Portfolio extends Component {
     const qtys = this.state.quantities;
     let totalValue = 0;
     this.props.prices.map((quote,idx) => {
+      debugger;
       return totalValue += quote.latestPrice * qtys[idx];
     });
     return totalValue;
@@ -93,11 +94,11 @@ export default class Portfolio extends Component {
     } else {
       qtys = [...portItems.values()].map((qty, idx) => {
         this.state.quantities.push(qty);
-        return <div key={`qty-${idx}`} >{qty} Shares</div>
+        return <div key={`qty-${idx}`} >{qty} Share(s)</div>
       });
       symbols = [...portItems.keys()].map(symbol => {
         this.state.symbols.add(symbol);
-        return <div key={symbol} >{symbol} - </div>
+        return <div key={symbol} >{symbol} </div>
       });
     }
     return(
@@ -114,11 +115,10 @@ export default class Portfolio extends Component {
 
   render() {
     return (
-      <div>
+      <div className="main-container">
         <div className="portfolio-container">
           <div className="portfolio-header-wrapper">
-            <div className="portfolio-title">Portfolio</div>
-            <div className="portfolio-value">${this.updatePortfolioValue().toFixed(2)}</div>
+            <div className="portfolio-value">Portfolio Value: ${this.updatePortfolioValue().toFixed(2)} </div>
           </div>
           <div className="portfolio-items-wrapper">
             <ul className="stock-index">
@@ -132,8 +132,7 @@ export default class Portfolio extends Component {
           </div>
         </div>
         <div className="trading-container">
-          <div className="cash-label">Cash Available: </div>
-          <div className="account-balance">${this.state.currentBalance.toFixed(2)}</div>
+          <div className="account-balance">Cash Available: ${this.state.currentBalance.toFixed(2)} </div>
           <SearchBarContainer userId={this.props.currentUser.id}/>
         </div>
         {this.renderErrors()}

@@ -4,9 +4,9 @@ class MainPage extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>TTP NYC Full Stack</h1>
-        <footer>
+      <div className="splash-page-container">
+        <h1 className="main-header">Welcome to Eugene Chung's TTP Second Stage Submission</h1>
+        <footer className="main-footer">
           Copyright &copy; 2020 Chung 
         </footer>
       </div>

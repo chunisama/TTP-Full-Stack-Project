@@ -11,7 +11,7 @@ import TransactionsContainer from './transactions/transactions_container';
 
 
 const App = () => (
-  <div>
+  <div className="background">
     <NavBarContainer />
     <Switch>
         <AuthRoute exact path="/" component={MainPage} />

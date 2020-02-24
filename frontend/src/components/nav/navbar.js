@@ -18,17 +18,17 @@ class NavBar extends React.Component {
   getLinks() {
       if (this.props.loggedIn) {
         return (
-            <div>
-                <Link to={'/portfolio'}>Portfolio</Link>
-                <Link to={'/transactions'}>Transactions</Link>
+            <div className="nav-container">
+                <Link className="links" to={'/portfolio'}>Portfolio</Link>
+                <Link className="links" to={'/transactions'}>Transactions</Link>
                 <button onClick={this.logoutUser}>Logout</button>
             </div>
         );
       } else {
         return (
-            <div>
-                <Link to={'/signup'}>Signup</Link>
-                <Link to={'/login'}>Login</Link>
+            <div className="splash-nav-container">
+                <Link className="links" to={'/signup'}>Signup</Link>
+                <Link className="links" to={'/login'}>Login</Link>
             </div>
         );
       }
@@ -36,8 +36,8 @@ class NavBar extends React.Component {
 
   render() {
       return (
-        <div>
-            <h1>TTP Full Stack</h1>
+        <div className="header-container">
+            <h1 className="header">TTP Full Stack</h1>
             { this.getLinks() }
         </div>
       );
