@@ -51,6 +51,9 @@ router.get('/fetchLatestPrice/:symbol', (req, res) => {
   })
 })
 
+// Add new api call for IEX to fetch a basket of latest stock prices 
+
+
 // Creating an db entry for stock purchase => user building portfolio
 router.post('/purchaseStock',
   passport.authenticate('jwt', { session: false }),
