@@ -16,9 +16,16 @@ async function apiCallAV(searchQuery, apikey) {
   return main;
 }
 
-// async function for api request to IEX
-async function apiCallIEX(ticker, apikey) {
-  let data = await fetch(`https://cloud.iexapis.com/stable/stock/${ticker}/quote/?token=${apikey}`);
+// async function for api request to IEX for a stock quote
+async function apiCallIEX(symbol, apikey) {
+  let data = await fetch(`https://cloud.iexapis.com/stable/stock/${symbol}/quote/?token=${apikey}`);
+  let main = await data.json();
+  return main;
+}
+
+// async function for api request for a batch of stocks quotes to IEX 
+async function apiBatchCallIEX(symbols, apikey) {
+  let data = await fetch(`https://cloud.iexapis.com/stable/stock/market/batch?symbols=${symbols}&types=quote&token=${apikey}`);
   let main = await data.json();
   return main;
 }
@@ -31,7 +38,7 @@ router.get(`/search/:searchQuery`, (req, res) => {
   })
 });
 
-// Fetching a user's portfolio of stocks
+// Fetching a user's portfolio of stocks & using same route to fetch every stock purchase for transactions page
 router.get('/user/:userId', (req, res) => {
   Stock.find({user: req.params.userId})
     .then(stocks => res.json(stocks))
@@ -49,10 +56,23 @@ router.get('/fetchLatestPrice/:symbol', (req, res) => {
   }).then(payload => {
     res.json(payload);
   })
-})
+});
 
-// Add new api call for IEX to fetch a basket of latest stock prices 
-
+// Api call for IEX to fetch a basket of latest stock prices 
+router.get('/fetchLatestBatchPrices/:symbols', (req, res) => {
+  apiBatchCallIEX(req.params.symbols, keys.iexAPIKey).then(apiRes => {
+    let formattedRes = Object.values(apiRes).map(item => {
+      return { 
+      symbol: item.quote.symbol, 
+      open: item.quote.open,
+      latestPrice: item.quote.latestPrice,
+      isUSMarketOpen: item.quote.isUSMarketOpen,
+    }});
+    return formattedRes;
+  }).then(payload => {
+    res.json(payload);
+  })
+});
 
 // Creating an db entry for stock purchase => user building portfolio
 router.post('/purchaseStock',

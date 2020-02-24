@@ -15,6 +15,7 @@
   transition: height 0.2s ease-in-out;
 }
 
-.content-wrapper{
-  display:flex
+.index-item{
+  display: flex;
+  justify-content: space-between;
 }

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Portfolio from './portfolio';
-import { fetchPortfolio, fetchAccountBalance, fetchStockPrice } from '../../actions/stock_actions';
+import { fetchPortfolio, fetchAccountBalance, fetchStockPrice, fetchStockBatchPrices } from '../../actions/stock_actions';
 
 const msp = state => {
   return {
@@ -17,6 +17,7 @@ const mdp = dispatch => {
     fetchPortfolio: (userId) => dispatch(fetchPortfolio(userId)),
     fetchAccountBalance: (userId) => dispatch(fetchAccountBalance(userId)),
     fetchStockPrice: (symbol) => dispatch(fetchStockPrice(symbol)),
+    fetchStockBatchPrices: (symbols) => dispatch(fetchStockBatchPrices(symbols)),
   }
 };
 

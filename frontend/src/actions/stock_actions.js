@@ -4,6 +4,7 @@ export const RECEIVE_PORTFOLIO = "RECEIVE_PORTFOLIO";
 export const RECEIVE_NEW_BALANCE = "RECEIVE_NEW_BALANCE";
 export const RECEIVE_PORTFOLIO_ERRORS = "RECEIVE_PORTFOLIO_ERRORS";
 export const RECEIVE_LATEST_PRICE = "RECEIVE_LATEST_PRICE";
+export const RECEIVE_LATEST_BATCH_PRICES = "RECEIVE_LATEST_BATCH_PRICES";
 
 // todo: rename this file portfolio actions
 export const receiveSearch = results => ({
@@ -26,6 +27,11 @@ export const receiveLatestPrice = payload => ({
   payload,
 })
 
+export const receiveLatestBatchPrices = payload => ({
+  type: RECEIVE_LATEST_BATCH_PRICES,
+  payload,
+})
+
 export const receivePortfolioErrors = errors => ({
   type: RECEIVE_PORTFOLIO_ERRORS,
   errors,
@@ -34,6 +40,12 @@ export const receivePortfolioErrors = errors => ({
 export const fetchStockPrice = symbol => dispatch => {  
   return StockApiUtil.fetchLatestPrice(symbol).then(payload => {
     return dispatch(receiveLatestPrice(payload))
+  })
+};
+
+export const fetchStockBatchPrices = symbols => dispatch => {
+  return StockApiUtil.fetchLatestBatchPrices(symbols).then(payload => {
+    return dispatch(receiveLatestBatchPrices(payload))
   })
 };
 

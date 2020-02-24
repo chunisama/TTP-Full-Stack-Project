@@ -3,31 +3,34 @@ import SearchBarContainer from "../search_bar/search_bar_container";
 
 export default class Portfolio extends Component {
   constructor(props){
-    super(props)
+    super(props);
     this.state = {
       currentBalance: 0,
       portfolioValue: 0,
       errors: {},
       symbols: new Set(),
-      quantities: new Set(),
-    }
+      quantities: [],
+    };
     this.renderPortfolioItems = this.renderPortfolioItems.bind(this);
-    this.renderLatestStockPrice = this.renderLatestStockPrice.bind(this);
-    this.fetchLatestStockPrice = this.fetchLatestStockPrice.bind(this);
+    this.renderLatestStockPrices = this.renderLatestStockPrices.bind(this);
+    // this.fetchLatestStockPrice = this.fetchLatestStockPrice.bind(this);
     this.updatePortfolioValue = this.updatePortfolioValue.bind(this);
+    this.fetchLatestStockBatchPrices = this.fetchLatestStockBatchPrices.bind(this);
   }
 
   componentDidMount(){
     this.props.fetchAccountBalance(this.props.currentUser.id);
     this.setState({currentBalance: this.props.accountBalance});
-    this.props.fetchPortfolio(this.props.currentUser.id).then(() => this.fetchLatestStockPrice());
+    this.props.fetchPortfolio(this.props.currentUser.id).then(() => this.fetchLatestStockBatchPrices());
   }
 
   componentDidUpdate(){
     if (this.props.accountBalance !== this.state.currentBalance) {
       this.setState({currentBalance: this.props.accountBalance})
       this.props.fetchPortfolio(this.props.currentUser.id)
-      .then(() => this.fetchLatestStockPrice());
+      .then(() => {
+        return this.fetchLatestStockBatchPrices()
+      });
     }
      else if (this.props.errors !== this.state.errors) {
       this.setState({errors: this.props.errors});
@@ -35,11 +38,10 @@ export default class Portfolio extends Component {
   }
 
   updatePortfolioValue(){
-    const symbols = Array.from(this.state.symbols);
-    const qtys = Array.from(this.state.quantities);
+    const qtys = this.state.quantities;
     let totalValue = 0;
-    symbols.map((symbol,idx) => {
-      return totalValue += this.props.prices[symbol] * qtys[idx];
+    this.props.prices.map((quote,idx) => {
+      return totalValue += quote.latestPrice * qtys[idx];
     });
     return totalValue;
   }
@@ -54,20 +56,24 @@ export default class Portfolio extends Component {
     return formattedErrors;
   }
 
-  fetchLatestStockPrice(){
+  // fetchLatestStockPrice(){
+  //   const symbols = Array.from(this.state.symbols);
+  //   symbols.map((symbol) => (
+  //     this.props.fetchStockPrice(symbol)
+  //     ));
+  //   }
+
+  fetchLatestStockBatchPrices(){
     const symbols = Array.from(this.state.symbols);
-    symbols.map((symbol) => (
-      this.props.fetchStockPrice(symbol)
-      ));
+    this.props.fetchStockBatchPrices(symbols);
     }
     
-  renderLatestStockPrice(){
-    const symbols = Array.from(this.state.symbols);
-    const qtys = Array.from(this.state.quantities);
-    let prices = symbols.map((symbol,idx) => {
+  renderLatestStockPrices(){
+    const qtys = this.state.quantities;
+    let prices = this.props.prices.map((quote,idx) => {
       return (
-        <div className="stock-price" key={`price-${idx}`}>
-          {(this.props.prices[symbol] * qtys[idx]).toFixed(2)}
+        <div key={`price-${idx}`}>
+          ${(quote.latestPrice * qtys[idx]).toFixed(2)}
         </div>
       )
     })
@@ -86,7 +92,7 @@ export default class Portfolio extends Component {
       return <p>Your portfolio is empty</p>
     } else {
       qtys = [...portItems.values()].map((qty, idx) => {
-        this.state.quantities.add(qty);
+        this.state.quantities.push(qty);
         return <div key={`qty-${idx}`} >{qty} Shares</div>
       });
       symbols = [...portItems.keys()].map(symbol => {
@@ -112,15 +118,15 @@ export default class Portfolio extends Component {
         <div className="portfolio-container">
           <div className="portfolio-header-wrapper">
             <div className="portfolio-title">Portfolio</div>
-            <div className="portfolio-value">{this.updatePortfolioValue()}</div>
+            <div className="portfolio-value">${this.updatePortfolioValue().toFixed(2)}</div>
           </div>
           <div className="portfolio-items-wrapper">
             <ul className="stock-index">
               <li className="index-item">
-                <div className="content-wrapper">
                   {this.renderPortfolioItems()}
-                  {this.renderLatestStockPrice()}
-                </div>
+                  <div className="stock-price">
+                    {this.renderLatestStockPrices()}
+                  </div>
               </li>
             </ul>
           </div>
