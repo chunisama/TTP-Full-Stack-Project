@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const db = process.env.mongoURI;
 const bodyParser = require('body-parser');
 const passport = require('passport');
-
+const path = require('path');
 const users = require("./routes/api/users");
 const stocks = require("./routes/api/stocks");
 
