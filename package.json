@@ -11,8 +11,6 @@
     "frontend": "node --prefix frontend",
     "dev": "concurrently \"node app.js\" \"npm run frontend\""
   },
-
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chunisama/TTP-Full-Stack-Project.git"
@@ -33,6 +31,7 @@
     "node-fetch": "^2.6.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "path": "^0.12.7",
     "validator": "^12.2.0"
   },
   "devDependencies": {
