@@ -35,5 +35,12 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
+app.use(express.static(path.join(__dirname, "/frontend/"))); 
+
+/*React root*/ 
+app.get("*", (req, res) => { 
+  return res.sendFile(path.join(__dirname + "public/index.html")); 
+});
+
 app.use("/api/users", users);
 app.use("/api/stocks", stocks);

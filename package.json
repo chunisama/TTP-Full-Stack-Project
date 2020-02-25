@@ -4,12 +4,12 @@
   "description": "stock porfolio tracker using IEX api",
   "main": "app.js",
   "scripts": {
-    "dev": "node app.js",
+    "start": "npm install && concurrently && node app.js && node --prefix frontend",
     "server": "nodemon app.js",
     "server:debug": "nodemon --inspect app.js",
     "frontend-install": "npm install --prefix frontend",
     "frontend": "npm start --prefix frontend",
-    "start": "concurrently \"npm run server\" \"npm run frontend\""
+    "dev": "concurrently \"node app.js\" \"npm run frontend\""
   },
   "repository": {
     "type": "git",
