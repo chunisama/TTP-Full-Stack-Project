@@ -35,13 +35,18 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-// app.use(express.static(path.join(__dirname, "/frontend/"))); 
 
+app.use(express.static('frontend/build'));
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+})
+
+// app.use(express.static(path.join(__dirname, "/frontend/"))); 
 /*React root*/ 
-app.get("*", (req, res) => { 
-  console.log(__dirname);
-  return res.sendFile(path.join(__dirname, "/frontend/public/index.html")); 
-});
+// app.get("*", (req, res) => { 
+//   console.log(__dirname);
+//   return res.sendFile(path.join(__dirname, "/frontend/public/index.html")); 
+// });
 
 app.use("/api/users", users);
 app.use("/api/stocks", stocks);
