@@ -6,7 +6,8 @@ const User = require('../../models/User');
 const Stock = require('../../models/Stock');
 const validateStockPurchase = require('../../validation/stocks');
 
-const keys = require('../../config/keys');
+// const keys = require('../../config/keys');
+const keys = process.env;
 const fetch = require('node-fetch');
 
 // async function for api request to AlphaVantage
