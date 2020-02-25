@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname, "/frontend/")));
 
 /*React root*/ 
 app.get("*", (req, res) => { 
-  return res.sendFile(path.join("/frontend/public/index.html")); 
+  return res.sendFile(path.join(__dirname, "/frontend/public/index.html")); 
 });
 
 app.use("/api/users", users);
