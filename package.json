@@ -4,7 +4,7 @@
   "description": "stock porfolio tracker using IEX api",
   "main": "app.js",
   "scripts": {
-    "start": "npm install && concurrently && node app.js && node --prefix frontend",
+    "start": "npm install concurrently \"node app.js\" \"node --prefix frontend\"",
     "server": "nodemon app.js",
     "server:debug": "nodemon --inspect app.js",
     "frontend-install": "npm install --prefix frontend",
