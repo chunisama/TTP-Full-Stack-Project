@@ -8,7 +8,7 @@
     "server": "nodemon app.js",
     "server:debug": "nodemon --inspect app.js",
     "frontend-install": "npm install --prefix frontend",
-    "frontend": "npm run node app.js --prefix frontend",
+    "frontend": "npm run start --prefix frontend",
     "dev": "concurrently \"node app.js\" \"npm run frontend\""
   },
   "repository": {
