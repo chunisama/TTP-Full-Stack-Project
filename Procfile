@@ -1,2 +1,3 @@
-web: npm run start
-server: npm run frontend
+web: npm run frontend
+server: npm run start
+ 
