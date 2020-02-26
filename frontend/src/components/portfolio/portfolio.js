@@ -57,6 +57,7 @@ export default class Portfolio extends Component {
     return formattedErrors;
   }
 
+  // todo: implement this method in searchbar so user can view stock price before purchasing
   // fetchLatestStockPrice(){
   //   const symbols = Array.from(this.state.symbols);
   //   symbols.map((symbol) => (

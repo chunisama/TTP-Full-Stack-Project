@@ -199,3 +199,11 @@ ul.transaction-index {
 .symbol-red{
   color: red;
 }
+
+.symbol-green{
+  color: green;
+}
+
+.symbol-gray{
+  color: gray;
+}
